@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iPhone Glitter - 50 iOS Secrets</title>
+<meta name="theme-color" content="#0a0014">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0a0014;
+    color: #fff;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  
+  #glitter-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .logo {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .subtitle {
+    color: #9ca3af;
+    font-size: 14px;
+  }
+  
+  .search-bar {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 0, 20, 0.8);
+    backdrop-filter: blur(20px);
+    padding: 16px 0;
+    margin: 0 -16px 20px;
+    padding-left: 16px;
+    padding-right: 16px;
+    z-index: 10;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .search-bar input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+  }
+  
+  .tip-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 12px;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  
+  .tip-card:active {
+    transform: scale(0.98);
+  }
+  
+  .tip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .tip-title {
+    font-size: 18px;
+    font-weight: 700;
+    flex: 1;
+  }
+  
+  .badge {
+    background: #ec4899;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  
+  .tip-steps {
+    color: #d1d5db;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(168, 85, 247, 0.2);
+    color: #6b7280;
+    font-size: 14px;
+  }
+  
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<canvas id="glitter-canvas"></canvas>
+
+<div class="container">
+  <div class="header">
+    <div class="logo">✨ iPhone Glitter</div>
+    <div class="subtitle">50 iOS secrets devszain found</div>
+  </div>
+  
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search tips..." />
+  </div>
+  
+  <div id="tips"></div>
+  
+  <div class="footer">
+    Made by Wumpgod 💜
+  </div>
+</div>
+
+<script>
+const tips = [
+  { title: "Back Tap Screenshot", steps: "Settings → Accessibility → Touch → Back Tap → Double Tap → Screenshot", new: true },
+  { title: "Face ID with Mask", steps: "Settings → Face ID & Passcode → Face ID with a Mask → On" },
+  { title: "Hide Home Screen Pages", steps: "Hold home screen → Dots at bottom → Uncheck pages → Done" },
+  { title: "Live Text in Photos", steps: "Open photo with text → Tap text icon → Copy/Translate" },
+  { title: "Drag & Drop Between Apps", steps: "Hold item → Switch app with other finger → Drop" },
+  { title: "Hidden Trackpad", steps: "Hold spacebar on keyboard → Move cursor" },
+  { title: "Battery Percentage", steps: "Settings → Battery → Battery Percentage → On" },
+  { title: "Focus Mode Automation", steps: "Settings → Focus → + → Set automation by location/time/app" },
+  { title: "Safari Tab Groups", steps: "Safari → Tabs button → New Empty Tab Group" },
+  { title: "Pin Chats in Messages", steps: "Swipe right on chat → Pin" },
+  { title: "Measure App", steps: "Open Measure → Point camera → Tap + to measure" },
+  { title: "Custom App Icons", steps: "Shortcuts → + → Add Action → Open App → Share → Add to Home Screen" },
+  { title: "Background Sounds", steps: "Settings → Accessibility → Audio/Visual → Background Sounds" },
+  { title: "Scan Documents in Notes", steps: "Notes → Camera icon → Scan Documents" },
+  { title: "Haptic Touch Speed", steps: "Settings → Accessibility → Touch → Haptic Touch → Fast/Slow" },
+  { title: "Silence Unknown Callers", steps: "Settings → Phone → Silence Unknown Callers" },
+  { title: "Share Wi-Fi Password", steps: "Connect device near → Tap Share Password popup" },
+  { title: "Text Replacement", steps: "Settings → General → Keyboard → Text Replacement → +" },
+  { title: "Record Screen with Mic", steps: "Control Center → Hold Screen Record → Microphone On" },
+  { title: "Emergency SOS", steps: "Press side button 5 times → Emergency SOS" },
+  { title: "Magnifier", steps: "Settings → Accessibility → Magnifier → On, triple-click side button" },
+  { title: "App Library Search", steps: "Swipe down on Home Screen → Search apps" },
+  { title: "Hide Photos", steps: "Photos → Select → ... → Hide" },
+  { title: "Guided Access", steps: "Settings → Accessibility → Guided Access → On, triple-click in app" },
+  { title: "Custom Vibration", steps: "Settings → Sounds → Ringtone → Vibration → Create New" },
+  { title: "Safari Reader Mode", steps: "Safari → AA icon → Show Reader" },
+  { title: "Medical ID", steps: "Health app → Profile → Medical ID → Edit" },
+  { title: "One-Handed Keyboard", steps: "Hold globe/emoji → Choose left/right keyboard" },
+  { title: "Offload Unused Apps", steps: "Settings → App Store → Offload Unused Apps" },
+  { title: "Announce Calls", steps: "Settings → Phone → Announce Calls → Headphones Only" },
+  { title: "Back Tap Flashlight", steps: "Settings → Accessibility → Touch → Back Tap → Triple Tap → Flashlight" },
+  { title: "Live Voicemail", steps: "Settings → Phone → Live Voicemail → On" },
+  { title: "Check AirPods Battery", steps: "Open case near iPhone → Popup shows battery" },
+  { title: "Shake to Undo", steps: "Shake phone while typing → Undo Typing" },
+  { title: "Custom Control Center", steps: "Settings → Control Center → Add/Remove controls" },
+  { title: "Safari Private Relay", steps: "Settings → [Your Name] → iCloud → Private Relay" },
+  { title: "Translate App Conversation", steps: "Translate app → Conversation mode → Auto translate" },
+  { title: "Hidden Field Test Mode", steps: "Dial *3001#12345#* → Call" },
+  { title: "Schedule Messages", steps: "Messages → + → Send Later → Pick time" },
+  { title: "Lock Notes with Face ID", steps: "Notes → Lock icon → Use Face ID" },
+  { title: "Reduce White Point", steps: "Settings → Accessibility → Display → Reduce White Point" },
+  { title: "App Privacy Report", steps: "Settings → Privacy & Security → App Privacy Report" },
+  { title: "Sound Recognition", steps: "Settings → Accessibility → Sound Recognition → On" },
+  { title: "Crop Screenshot Quickly", steps: "Screenshot → Crop handles → Done → Save" },
+  { title: "Duplicate Photos", steps: "Photos → Albums → Duplicates → Merge" },
+  { title: "Custom Ringtones for Contacts", steps: "Contacts → Edit → Ringtone → Custom" },
+  { title: "Live Activities", steps: "Settings → Face ID & Passcode → Live Activities → On" },
+  { title: "Clean Energy Charging", steps: "Settings → Battery → Battery Health → Clean Energy Charging" },
+  { title: "NameDrop", steps: "Bring two iPhones close → Share contact" },
+  { title: "StandBy Mode", steps: "Settings → StandBy → On, charge phone sideways" }
+];
+
+const tipsContainer = document.getElementById('tips');
+const searchInput = document.getElementById('search');
+
+function renderTips(filter = '') {
+  tipsContainer.innerHTML = tips
+    .filter(t => t.title.toLowerCase().includes(filter.toLowerCase()) || 
+                 t.steps.toLowerCase().includes(filter.toLowerCase()))
+    .map(t => `
+      <div class="tip-card">
+        <div class="tip-header">
+          <div class="tip-title">${t.title}</div>
+          ${t.new ? '<span class="badge">NEW</span>' : ''}
+        </div>
+        <div class="tip-steps">${t.steps}</div>
+      </div>
+    `).join('');
+}
+
+searchInput.addEventListener('input', e => renderTips(e.target.value));
+renderTips();
+
+// Glitter animation
+const canvas = document.getElementById('glitter-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function createParticle() {
+  return {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2 + 0.5,
+    speedY: Math.random() * 0.5 + 0.2,
+    opacity: Math.random() * 0.5 + 0.3
+  };
+}
+
+function initParticles() {
+  particles = [];
+  for(let i = 0; i < 100; i++) {
+    particles.push(createParticle());
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  particles.forEach(p => {
+    ctx.fillStyle = `rgba(168, 85, 247, ${p.opacity})`;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+    
+    p.y += p.speedY;
+    if(p.y > canvas.height) {
+      p.y = 0;
+      p.x = Math.random() * canvas.width;
+    }
+  });
+  
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', resize);
+resize();
+initParticles();
+animate();
+</script>
+</body>
+</html>
